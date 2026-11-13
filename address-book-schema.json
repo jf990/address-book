@@ -1,0 +1,57 @@
+{
+  "head": {
+    "title": "string",
+    "dateCreated": "date",
+    "dateLastUpdated": "date",
+    "dateLastExport": "date"
+  },
+  "addresses": [
+    {
+      "category": "?array<string>",
+      "index": "?string",
+      "name": {
+        "first": "?string",
+        "last": "?string",
+        "middle": "?string",
+        "prefix": "?string",
+        "suffix": "?string",
+        "dob": "?date",
+        "photo": "?string"
+      },
+      "contacts": [
+        {
+          "type": "string",
+          "address": "string"
+        }
+      ],
+      "address": [
+        {
+          "business": {
+            "company": "?string",
+            "street": "?string",
+            "street2": "?string",
+            "location": "?string",
+            "city": "?string",
+            "state": "?string",
+            "zip": "?string",
+            "country": "?string"
+          }
+        },
+        {
+          "home": {
+            "street": "?string",
+            "street2": "?string",
+            "city": "?string",
+            "state": "?string",
+            "zip": "?string",
+            "country": "?string"
+          }
+        }
+      ],
+      "additional": {
+        "anykey": "?data"
+      },
+      "notes": "?text"
+    }
+  ]
+}

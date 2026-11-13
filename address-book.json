@@ -1,0 +1,48 @@
+{
+  "head": {
+    "dateCreated": 1756166162982,
+    "dateLastUpdated": 1756166162982,
+    "title": "jf",
+    "dateLastExport": 1756166283909
+  },
+  "addresses": [
+    {
+      "category": ["work", "friends"],
+      "index": "John Foster",
+      "name": {
+        "first": "John",
+        "last": "Foster",
+        "middle": "",
+        "prefix": "Mr.",
+        "suffix": "",
+        "dob": "Sun Feb 26 1961 00:00:00",
+        "photo": "jfoster@esri.com"
+      },
+      "contacts": {
+        "email": "jfoster@esri.com",
+        "mobile": "909.645.9576",
+        "twitter": "geoplay9",
+        "work": "888.777.6565",
+        "website": "https://developers.arcgis.com",
+        "phone2": "808.777.3333"
+      },
+      "address": [
+        {
+          "business": {
+            "company": "Esri",
+            "street": "380 New York St.",
+            "location": "M3",
+            "city": "Redlands",
+            "state": "CA",
+            "zip": "92373",
+            "country": "us"
+          }
+        }
+      ],
+      "additional": {
+        "anykey": "data"
+      },
+      "notes": "A markdown document"
+    }
+  ]
+}
