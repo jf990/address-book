@@ -3,7 +3,12 @@
   "description": "A web browser application to manage all your contacts in a simple modern UI built as a JavaScript browser application using modern JavaScript and ESM.",
   "private": false,
   "version": "1.0.0",
+  "license": "Apache-2.0",
   "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "keywords": ["javascript", "esm", "address", "contacts", "pwa", "responsive"],
   "scripts": {
     "dev": "vite source",
     "build": "vite build source --outDir ../dist --emptyOutDir",
@@ -17,5 +22,12 @@
   "devDependencies": {
     "vite": "^8.3.8",
     "vite-plugin-pwa": "^2.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/jf990/address-book.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jf990/address-book/issues"
   }
 }
