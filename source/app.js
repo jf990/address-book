@@ -376,6 +376,10 @@ function destroyAddressMap() {
 }
 
 async function initializeAddressMap() {
+  if (navigator.onLine === false) {
+    showToast('Maps require an Internet connection.');
+    return;
+  }
   if (!arcgisApiKey) {
     console.log('Configure VITE_ARCGIS_API_KEY to load the Navigation map and locate addresses.');
     return;

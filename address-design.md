@@ -8,11 +8,13 @@ When the app opens it loads the data saved in the JSON file [address-book.json](
 
 ## Core technology
 
-- browser application targeting modern recent browsers.
-- built with modern JavaScript and ESM.
-- use only Vite and only pure JavaScript, do not use any framework.
-- responsive design
-- address data is stored as a JSON object using the schema description in the file [address-book-schema.json](./address-book-schema.json).
+- Browser application targeting modern recent browsers.
+- Built with modern JavaScript and ESM.
+- Use only Vite and only pure JavaScript, do not use any framework.
+- Responsive design, app should render well on desktop, tablet, and mobile devices.
+- Address data is stored as a JSON object using the schema description in the file [address-book-schema.json](./address-book-schema.json).
+- Support for add to home screen: adds a manifest file and other resources required to support standalone launch mode.
+- Ability to work offline without an Internet connection by using service workers and caching required resources locally.
 
 ## Main display
 
