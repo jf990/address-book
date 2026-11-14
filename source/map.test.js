@@ -106,6 +106,15 @@ test('standalone map renders without a contact and uses device coordinates', asy
   assert.equal(popup.open, undefined);
 });
 
+test('opening a map offline reports that an Internet connection is required', async () => {
+  const { context, calls, mapElement } = mapHarness({ contact: true });
+  context.navigator.onLine = false;
+  await context.initializeAddressMap();
+  assert.deepEqual(calls.toasts, ['Maps require an Internet connection.']);
+  assert.equal(calls.geocoding.length, 0);
+  assert.equal(mapElement.map, undefined);
+});
+
 for (const type of ['home', 'business']) {
   test(`${type} contact map geocodes its address and opens its popup without device location`, async () => {
     const { context, calls, popup, location } = mapHarness({
