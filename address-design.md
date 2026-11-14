@@ -4,15 +4,13 @@ A web browser application to manage all your contacts in a simple modern UI buil
 
 Application is displayed consuming 100% browser client area without the browser chrome, designed to look and feel like a native app.
 
-When the app opens it loads the data saved in the JSON file [address-book.json](./address-book.json) as the data model.
-
 ## Core technology
 
 - Browser application targeting modern recent browsers.
 - Built with modern JavaScript and ESM.
 - Use only Vite and only pure JavaScript, do not use any framework.
 - Responsive design, app should render well on desktop, tablet, and mobile devices.
-- Address data is stored as a JSON object using the schema description in the file [address-book-schema.json](./address-book-schema.json).
+- Address data is stored in local storage as a JSON object using the schema description in the file [address-book-schema.json](./address-book-schema.json). User settings are persisted in local storage as a separate object from the address data.
 - Support for add to home screen: adds a manifest file and other resources required to support standalone launch mode.
 - Ability to work offline without an Internet connection by using service workers and caching required resources locally.
 
