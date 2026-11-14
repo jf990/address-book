@@ -19,3 +19,10 @@ npm run dev
 
 Open a browser to the URL shown in the console, typically `http://localhost:5173/`
 
+## Deployment
+
+See [Install.md](./INSTALL.md)
+
+## License
+
+[Apache 2.0](./LICENSE)
