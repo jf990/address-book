@@ -362,6 +362,33 @@ function formPage() {
     <div class="form-actions"><button class="button button-quiet" type="button" data-action="cancel">Cancel</button><button class="button button-primary" type="submit">${editingId ? 'Save changes' : 'Add to address book'} ${icon('chevron')}</button></div></form></main>`;
 }
 
+function contactPage() {
+  const entry = contacts.find((item) => item.id === selectedId);
+  if (!entry) return contactsPage();
+  const field = (label, value, className = '') => value == null || value === '' ? '' : `<div class="detail-field ${className}"><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`;
+  const addressFields = (address, business = false) => `
+    ${business ? field('Company', address.company) : ''}
+    ${field('Street address', address.street)}
+    ${field(business ? 'Suite / unit' : 'Apartment / unit', address.street2)}
+    ${field('Location', address.location)}
+    <div class="three-fields">${field('City', address.city)}${field('State', address.state)}${field('ZIP', address.zip)}</div>
+    ${field('Country', address.country)}`;
+  const additional = Object.entries(entry.additional || {}).map(([key, value]) => field(key, typeof value === 'object' && value !== null ? JSON.stringify(value, null, 2) : value)).join('');
+  return `<main class="form-page contact-page"><div class="form-heading"><button class="back-link" data-page="contacts">${icon('chevron')} Back to contacts</button><div class="identity">${avatar(entry)}<h1 tabindex="-1">${escapeHtml(displayName(entry))}</h1></div></div>
+    <div class="contact-form"><section class="form-section"><div class="form-section-title"><span>01</span><div><h2>The person</h2></div></div><dl class="form-fields form-grid">
+      ${field('First name', entry.name.first)}${field('Last name', entry.name.last)}${field('Middle name', entry.name.middle)}
+      ${field('Prefix / suffix', [entry.name.prefix, entry.name.suffix].filter(Boolean).join(' '))}
+      ${field('Birthday', entry.name.dob)}${field('Photo URL or email', entry.name.photo)}
+      ${field('Categories', entry.category.join(', '), 'field-span')}${field('Index', entry.index, 'field-span')}
+    </dl></section>
+    <section class="form-section"><div class="form-section-title"><span>02</span><div><h2>Ways to reach them</h2><p>Email, phone, website, social media.</p></div></div><dl class="contact-fields">${entry.contacts.filter((item) => item.address).map((item) => `<div class="detail-field"><dt>${escapeHtml(item.type)}</dt><dd>${selectedContactMarkup(item)}</dd></div>`).join('') || '<p class="empty-detail">No contact details</p>'}</dl></section>
+    <section class="form-section"><div class="form-section-title"><span>03</span><div><h2>Where they are</h2><p>Work and/or home</p></div></div><div class="address-columns">
+      ${['business', 'home'].map((type) => `<div class="address-group"><div class="address-group-label">${type === 'business' ? 'BUSINESS / WORK' : 'HOME'}${mapPinButton(entry, type, addressLine(entry[type]))}</div><dl class="form-fields">${addressFields(entry[type], type === 'business')}</dl></div>`).join('')}
+    </div><dl class="notes-field">${field('Notes', entry.notes)}</dl></section>
+    ${additional ? `<section class="form-section"><div class="form-section-title"><span>04</span><div><h2>Additional information</h2></div></div><dl class="form-fields form-grid">${additional}</dl></section>` : ''}
+    <div class="form-actions"><button class="button button-quiet" data-page="contacts">Back to contacts</button><button class="button button-primary" data-edit="${escapeHtml(entry.id)}">${icon('edit')} Edit contact</button></div></div></main>`;
+}
+
 function mapPage() {
   const entry = contacts.find((item) => item.id === mapContactId);
   return `<main class="form-page map-page"><arcgis-map id="address-map" class="address-map" popup-disabled aria-label="${entry ? `Map showing ${escapeHtml(displayName(entry))}'s address` : 'Map showing current location'}"><arcgis-search slot="top-right"></arcgis-search><arcgis-popup slot="popup"></arcgis-popup></arcgis-map></main>`;
@@ -561,7 +588,7 @@ function importStrategyOptions() {
 
 function render() {
   destroyAddressMap();
-  const page = activePage === 'form' ? formPage() : activePage === 'settings' ? settingsPage() : activePage === 'duplicates' ? duplicatesPage() : activePage === 'map' ? mapPage() : contactsPage();
+  const page = activePage === 'form' ? formPage() : activePage === 'contact' ? contactPage() : activePage === 'settings' ? settingsPage() : activePage === 'duplicates' ? duplicatesPage() : activePage === 'map' ? mapPage() : contactsPage();
   document.querySelector('#app').innerHTML = `${header()}${page}${activePage === 'contacts' ? navigation() : ''}<div id="toast" class="toast" role="status" aria-live="polite"></div><dialog id="import-dialog" class="app-dialog"><form method="dialog"><button class="dialog-close icon-button" aria-label="Close">${icon('close')}</button></form><div class="eyebrow">BRING YOUR CONTACTS ALONG</div><h2>Import contacts</h2><p>Choose whether to add these contacts alongside your existing contacts or replace the address book.</p><div class="import-modes"><label><input type="radio" name="import-mode" value="replace"><span><strong>Replace address book</strong><small>Remove existing contacts before importing.</small></span></label><label><input type="radio" name="import-mode" value="merge" checked><span><strong>Add to address book</strong><small>Keep current contacts and add imported ones.</small></span></label></div><button class="button button-primary dialog-main-action" data-action="choose-import">Choose a file ${icon('chevron')}</button></dialog><dialog id="export-dialog" class="app-dialog"><form method="dialog"><button class="dialog-close icon-button" aria-label="Close">${icon('close')}</button></form><div class="eyebrow">TAKE YOUR DATA WITH YOU</div><h2>Export address book</h2><p>Download your contacts in a format you can keep or share.</p><label class="dialog-label">File name<input id="export-name" value="my-addresses" autocomplete="off"></label><div class="export-format" role="group" aria-label="Export format"><button data-export-format="json" class="is-active">JSON</button><button data-export-format="csv">CSV</button></div><button class="button button-primary dialog-main-action" data-action="download-export">Download file ${icon('download')}</button></dialog>`;
   if (activePage === 'settings') {
     document.querySelector('.settings-data')?.insertAdjacentHTML('beforebegin', mapTypeSettings());
@@ -595,7 +622,10 @@ function showToast(message) {
 
 function selectContact(id) {
   selectedId = id;
+  activePage = 'contact';
   render();
+  window.scrollTo(0, 0);
+  document.querySelector('.contact-page h1')?.focus();
 }
 
 function openForm(id = null) {
@@ -950,11 +980,11 @@ function bindEvents() {
   document.querySelectorAll('[data-alpha]').forEach((button) => button.addEventListener('click', () => { searchTerm = ''; activeLetter = button.dataset.alpha; expandedLetters.clear(); render(); }));
   document.querySelectorAll('[data-card-id], [data-row-id]').forEach((element) => {
     element.addEventListener('click', (event) => {
-      if (event.target.closest('button, select, a')) return;
+      if (event.target.closest('button, select, a, label')) return;
       selectContact(element.dataset.cardId || element.dataset.rowId);
     });
     element.addEventListener('keydown', (event) => {
-      if ((event.key === 'Enter' || event.key === ' ') && !event.target.closest('button, select')) { event.preventDefault(); selectContact(element.dataset.cardId || element.dataset.rowId); }
+      if ((event.key === 'Enter' || event.key === ' ') && event.target === element) { event.preventDefault(); selectContact(element.dataset.cardId || element.dataset.rowId); }
     });
   });
   document.querySelectorAll('[data-edit]').forEach((button) => button.addEventListener('click', () => openForm(button.dataset.edit)));
@@ -1010,7 +1040,7 @@ document.addEventListener('keydown', (event) => {
     render();
     document.querySelector('#search-input')?.focus();
   }
-  if (event.key === 'Escape' && activePage === 'form') { activePage = 'contacts'; editingId = null; render(); }
+  if (event.key === 'Escape' && (activePage === 'form' || activePage === 'contact')) { activePage = 'contacts'; editingId = null; render(); }
 });
 
 render();

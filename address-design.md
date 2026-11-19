@@ -35,9 +35,15 @@ Navigation buttons appear in a navigation tray at the bottom of the view:
 - Map - show the map view screen centered on the current device location.
 - Settings - show the application settings screen.
 
+When a person card or person row is clicked then show a display contact screen that displays all of the contact information available for that entry using the same layout as the address edit form.
+
 ## Screens
 
 The following screens can be navigated from the main screen.
+
+### Display contact screen
+
+Click a person card or row, or focus it and press Enter or Space, to view the contact without editing. The screen uses the edit form's person, contact methods, and address sections, and displays all saved contact methods, notes, and additional information. Back to contacts (or Escape) returns to the current list and filters; Edit contact opens the populated edit form. Embedded edit buttons, map pins, contact links, and contact-method dropdowns retain their own actions.
 
 ### New and edit address screen
 
